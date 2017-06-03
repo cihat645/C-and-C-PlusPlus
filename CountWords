@@ -1,0 +1,73 @@
+//Goal: To become familiar with characters. Write a program to read a text file and count the number of letters (isalpha), digits (isdigit), punctuation symbols (ispunct), and whitespace characters (isspace) in the file. At the end of the file, the program is to display an appropriate report.
+
+//When you get this working, try also counting the number of words and sentences.
+
+#include <iostream>
+#include <ctype.h>
+#include <fstream>
+
+using namespace std;
+
+int main() {
+
+    ifstream streamIn; //declaring an input stream called streamIn that will extract data from a file
+    
+    char ch;
+    int letters = 0, digits = 0, punct = 0, spaces = 0, words = 0, sentences = 0, flag = 0;
+    
+    streamIn.open("/Users/thomasciha/Documents/CS/Lab3File.txt");
+    
+    if (streamIn.fail()) {
+        cout << "File failed to open" << endl;
+        return 0;
+    }
+    
+    while(streamIn.get(ch)){ //avoid using the .eof() function because it doesn't always provide accurate results
+        //says while there is still another char to get, keep going.
+       //the get() function gets the next character and saves it to char "ch"
+        
+        if (isalpha(ch) == 1){ //isalpha() returns 1 if it is a letter and returns 0 if not
+            letters++;
+            flag = 1; //char is a letter
+        }
+        
+        else if (isspace(ch) == 1) {
+            spaces++;
+            if (flag == 1) {
+                words++;
+                flag = 0;
+            }
+        }
+        
+        else if (isdigit(ch) == 1) {
+            digits++;
+            flag = 1;
+        }
+        
+        else if (ispunct(ch) == 1) {
+            punct++;
+            
+            if (ch == '.' || ch == '!' || ch == '?'){
+                sentences++;
+                if (flag == 1) {
+                    words++;
+                    flag = 0;
+                }
+            }
+        }
+    }
+ 
+    ofstream StreamOut;
+    StreamOut.open("/Users/thomasciha/Documents/CS/Lab3File.txt");
+
+    StreamOut << "letters = " << letters << endl;
+    StreamOut << "spaces = " << spaces << endl;
+    StreamOut << "digits = " << digits << endl;
+    StreamOut << "punct = " << punct << endl;
+    StreamOut << "sentences = " << sentences << endl;
+    StreamOut << "words = " << words << endl;
+    
+    streamIn.close();
+    StreamOut.close();
+    return 0;
+}
