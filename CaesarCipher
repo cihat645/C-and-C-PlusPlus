@@ -1,0 +1,46 @@
+//
+//  main.c
+//  CaesarCipher
+//
+//  Created by Thomas Ciha on 1/2/17.
+//  Copyright © 2017 Thomas Ciha. All rights reserved.
+//
+
+//Encrypting data w/Caesar Cipher
+
+#include <stdio.h>
+#include <math.h>
+#include <string.h>
+
+int key;
+void Encrypt(char Pass_string[], int key);
+int FindKey(char *string);
+
+void Encrypt(char Pass_string[], int key) {
+    long int length = strlen(Pass_string) - 1;
+
+    for (int b = 0; b < length; b++) {
+        *(Pass_string + b) += key;
+        if (*Pass_string > 126) {
+            *Pass_string -= 94;
+        }
+    }
+}
+
+
+int main() {
+    
+    char password[100];
+    int key;
+    
+    printf("Enter a password: ");
+    fgets(password, 100, stdin);
+    printf("Enter the key value: ");
+    scanf("%d", &key);
+    
+    Encrypt(password, key);
+    printf("here is the encrypted password: %s\n", password);
+
+    
+    return 0;
+}
